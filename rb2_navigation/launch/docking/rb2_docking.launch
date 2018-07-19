@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-<!-- rb1_base_docking -->
+<!-- rb2_docking -->
 
 	<arg name="id_robot" default="rb2"/>
 		
@@ -25,7 +25,7 @@
 		</node>
 
 
-		<node name="marker2contact" pkg="tf" type="static_transform_publisher" args="-0.28 0.0 0 0 0 0 $(arg prefix)docking_station_marker $(arg prefix)docking_station_contact 100" />
+		<node name="marker2contact" pkg="tf" type="static_transform_publisher" args="-0.13 0.0 0 0 0 0 $(arg prefix)docking_station_marker $(arg prefix)docking_station_contact 100" />
 
 		<node name="tf_robotnik_pose_filter" pkg="robotnik_pose_filter" type="tf_pose_filter_node" respawn="false" output="screen">
 			<param name="filter_position_sensitivity"       type="double" value="0.8" />
@@ -36,12 +36,13 @@
 			<param name="filtered_source_frame" type="string" value="$(arg prefix)odom" />
 			<param name="filtered_target_frame" type="string" value="$(arg prefix)docking_station_marker" />
 			<param name="two_d_mode" type="bool" value="true" />
+			<param name="apply_ar_track_arlvar_rotation" type="bool" value="true"/>
 			<rosparam param="apply_transform">[0.0, 0.0, 0.0, 0.0, 1.5707, 1.5707]</rosparam>
 			<!-- if not set, does not apply a transform. transform is xyz-rpy, 6 parameters. remember that rotation is applied in reverse order (ypr) -->
 		</node>
 
 
-		<node name="docker" pkg="robotnik_docker" type="diff_docker_node" respawn="false" output="screen">
+		<node name="charge_docker" pkg="robotnik_docker" type="diff_docker_node" respawn="false" output="screen">
 			<param name="robot_base_frame" type="string" value="$(arg prefix)base_footprint" />
 			
 			<param name="fixed_frame" type="string" value="$(arg prefix)odom" />
@@ -52,7 +53,7 @@
 			<param name="maximum_linear_velocity_x" value="0.4" />
 			<param name="maximum_angular_velocity_z" value="0.7" />
 			
-			<param name="threshold_linear_velocity_x" value="0.002" />
+			<param name="threshold_linear_velocity_x" value="0.005" />
 			<param name="threshold_linear_velocity_y" value="0.002" />
 			<param name="threshold_angular_velocity_z" value="0.05" />
 
@@ -60,7 +61,7 @@
 			<param name="initial_minimum_distance_x" value="0.5" />
 
 			<param name="initial_maximum_arc" value="0.7" />
-			<param name="initial_maximum_yaw" value="1" />
+			<param name="initial_maximum_yaw" value="0.15" />
 			<param name="offset_for_heading_adjustment" value="0.5"/>
 
 			<!-- remap from="~cmd_vel" to="cmd_vel" / -->
